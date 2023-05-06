@@ -1,17 +1,12 @@
 import random
+import pandas as pd
 class Hangman:
     def __init__(self):
-        import requests
-        url = 'https://www.ime.usp.br/~pf/dicios/br-sem-acentos.txt'
-        r = requests.get(url, allow_redirects=True)
-        if r.status_code==200:
-            self.content = str(r.content.decode()).split('\n')
-        else:
-            print("Erro: ", r.status_code)
+        self.content = pd.read_csv("br-sem-acentos.txt", header=None, names=['word'])
     
     def novo_jogo(self, vidas=5):
         self.vidas = vidas
-        self.palavra = random.choice(self.content)
+        self.palavra = random.choice(self.content["word"])
         return len(self.palavra)
 
     def tentar_letra(self, letra):

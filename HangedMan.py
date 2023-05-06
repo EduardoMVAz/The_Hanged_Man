@@ -1,4 +1,5 @@
 import pandas as pd
+from Hangman import Hangman
 
 class HangedMan:
 
@@ -16,13 +17,11 @@ class HangedMan:
         self.df = pd.DataFrame.from_dict(letter_counts, orient='index')
             
 
-    def guess(self, word:str, wrong_letters:list):
-        # --a--b
-        df_ = self.df[self.df.index.str.len() == len(word)]
-        guessed_letters = [i for i in word if i != "-"]
-        df_ = df_.drop(guessed_letters + wrong_letters, axis=1)
-
+    def guess(self, word:str):
         # acha a letra mais frequente e chuta
+
+        guessed_letters = [i for i in word if i != "-"]
+        df_ = self.df.drop(guessed_letters, axis=1)
         lf = self.letter_frequencies(df_)
         letter = lf.idxmax()
 
@@ -35,16 +34,69 @@ class HangedMan:
         total_letters = letter_counts.sum()
 
         return letter_counts/total_letters
+    
+    def count_same_place_letters(self, word1, word2):
+        count = 0
+        for i in range(len(word1)):
+            if word1[i] == word2[i]:
+                count += 1
+        return count
+    
+    def find_incomplete_word(self, word):
+        max_count = 0
+        final_word = ""
+        for palavra in self.df.index:
+            count = self.count_same_place_letters(word, palavra)
+            if count > max_count:
+                max_count = count
+                final_word = palavra
+        return final_word
+
+
+    def play(self):
+
+        game = Hangman()
+        game.novo_jogo()
+        print(game.palavra)
+        
+
+        word = ""
+        for i in range(len(game.palavra)):
+            word += "-"
+        self.df = self.df[self.df.index.str.len() == len(word)]
+        word = list(word)
+
+        while game.vidas > 1:
+             
+            if word.count("-") == 0:
+                return game.tentar_palavra("".join(word))
+
+            letter = self.guess(word)
+            result = game.tentar_letra(letter)
+
+            if result != False:
+                if len(result) > 0:
+                    for i in result:
+                        word[i] = letter
+                    self.df = self.df[self.df[letter] == len(result)]
+                else:
+                    self.df = self.df[self.df[letter] == 0]
+
+        word = self.find_incomplete_word(word)
+        
+        return game.tentar_palavra(word) 
+
+
+
 
 
 
 def main():
+    # Inicializa o dataframe de palavras
     df = pd.read_csv("br-sem-acentos.txt", header=None, names=['word'])
     df['word'] = df['word'].str.lower()
-    p = HangedMan(df)
-    word = "-----"
-
-    print(p.guess(word, []))
+    hangedman = HangedMan(df)
+    return hangedman.play()
 
 if __name__ == "__main__":
     main()
