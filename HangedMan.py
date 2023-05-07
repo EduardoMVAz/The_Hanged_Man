@@ -21,8 +21,8 @@ class HangedMan:
         # acha a letra mais frequente e chuta
 
         guessed_letters = [i for i in word if i != "-"]
-        df_ = self.df.drop(guessed_letters, axis=1)
-        lf = self.letter_frequencies(df_)
+        df__ = self.df_.drop(guessed_letters, axis=1)
+        lf = self.letter_frequencies(df__)
         letter = lf.idxmax()
 
         return letter
@@ -45,7 +45,7 @@ class HangedMan:
     def find_incomplete_word(self, word):
         max_count = 0
         final_word = ""
-        for palavra in self.df.index:
+        for palavra in self.df_.index:
             count = self.count_same_place_letters(word, palavra)
             if count > max_count:
                 max_count = count
@@ -53,17 +53,16 @@ class HangedMan:
         return final_word
 
 
-    def play(self):
+    def play(self, palavra=""):
 
         game = Hangman()
-        game.novo_jogo()
-        print(game.palavra)
+        game.novo_jogo(palavra)
         
 
         word = ""
         for i in range(len(game.palavra)):
             word += "-"
-        self.df = self.df[self.df.index.str.len() == len(word)]
+        self.df_ = self.df[self.df.index.str.len() == len(word)]
         word = list(word)
 
         while game.vidas > 1:
@@ -78,18 +77,13 @@ class HangedMan:
                 if len(result) > 0:
                     for i in result:
                         word[i] = letter
-                    self.df = self.df[self.df[letter] == len(result)]
+                    self.df_ = self.df_[self.df_[letter] == len(result)]
                 else:
-                    self.df = self.df[self.df[letter] == 0]
+                    self.df_ = self.df_[self.df_[letter] == 0]
 
         word = self.find_incomplete_word(word)
         
         return game.tentar_palavra(word) 
-
-
-
-
-
 
 def main():
     # Inicializa o dataframe de palavras
