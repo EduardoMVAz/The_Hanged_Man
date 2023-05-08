@@ -56,7 +56,7 @@ class HangedMan:
     def play(self, palavra=""):
 
         game = Hangman()
-        game.novo_jogo(palavra)
+        game.novo_jogo(palavra=palavra.lower())
         
 
         word = ""
@@ -90,7 +90,7 @@ def main():
     df = pd.read_csv("br-sem-acentos.txt", header=None, names=['word'])
     df['word'] = df['word'].str.lower()
     hangedman = HangedMan(df)
-    return hangedman.play()
+    print(hangedman.play())
 
 if __name__ == "__main__":
     main()

@@ -5,13 +5,16 @@ class Hangman:
         self.content = pd.read_csv("br-sem-acentos.txt", header=None, names=['word'])
     
     def novo_jogo(self, palavra="", vidas=5):
-        self.vidas = vidas
+        self.vidas = vidas 
+        print(self.content["word"])
 
         # Adição da possibilidade de escolher a palavra
         if palavra in self.content["word"]:
             self.palavra = palavra
-        else:
-            self.palavra = random.choice(self.content["word"])
+            return len(self.palavra)
+        elif palavra != "":
+            print("A palavra passada foi inválida! Outra palavra foi escolhida")
+        self.palavra = random.choice(self.content["word"])
 
         return len(self.palavra)
 
