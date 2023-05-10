@@ -6,10 +6,9 @@ class Hangman:
     
     def novo_jogo(self, palavra="", vidas=5):
         self.vidas = vidas 
-        print(self.content["word"])
 
         # Adição da possibilidade de escolher a palavra
-        if palavra in self.content["word"]:
+        if self.content["word"].str.contains(palavra).any() and palavra != '':
             self.palavra = palavra
             return len(self.palavra)
         elif palavra != "":
