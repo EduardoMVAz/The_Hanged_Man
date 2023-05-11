@@ -73,12 +73,14 @@ Para entender como o jogador pode errar e quais são os casos onde ele erra com 
 
 Os dois fatores mais importantes são: 
 
-A. O tamanho da palavra;
+A. O tamanho da palavra;  
 B. E as vogais que ela possuí. 
 
 Durante os testes, realizamos a contagem do número de palavras com cada tamanho, de 1 letra até 20, e **entre 6 e 14 letras são os tamanhos mais frequentes de palavras**. 
 
-Sabendo que existem *somente 5 mil palavras com 5 letras, e 35 mil com 11 letras* na base de dados, e entendendo como funciona o algoritmo, é natural propor que seria mais fácil acertar uma palavra de 5 letras. No entanto, ness momento o outro fator deve ser levado em consideração: **as vogais e a construção das palavras em português**. Como uma palavra menor tem menos letras, ela não pode ter muitas letras que a diferenciem das outras, e, portanto, acaba que *palavras menores tendem a possuir muitas letras em comum*, o que dificulta a remoção de palavras do banco de dados. Uma palavra grande, porém com muitas letras diferentes, ou uma contagem incomum de letras, como `salvaguardar`, que possuí 4 "a"s, é muito mais fácil para o algoritmo de advinhar. Após chutar a vogal "a" e então as consoantes mais comuns, "r" e "s", quase nenhuma palavra tem essa mesma combinação atual no banco, facilitando o chute.
+Sabendo que existem *somente 5 mil palavras com 5 letras, e 35 mil com 11 letras* na base de dados, e entendendo como funciona o algoritmo, é natural propor que seria mais fácil acertar uma palavra de 5 letras. No entanto, ness momento o outro fator deve ser levado em consideração: **as vogais e a construção das palavras em português**. Como uma palavra menor tem menos letras, ela não pode ter muitas letras que a diferenciem das outras, e, portanto, acaba que *palavras menores tendem a possuir muitas letras em comum*, o que dificulta a remoção de palavras do banco de dados. 
+
+Uma palavra grande, porém com muitas letras diferentes, ou uma contagem incomum de letras, como `salvaguardar`, que possuí 4 "a"s, é muito mais fácil para o algoritmo de advinhar. Após chutar a vogal "a" e então as consoantes mais comuns, "r" e "s", quase nenhuma palavra tem essa mesma combinação atual no banco, facilitando o chute.
 
 O principal fator de erro é esse: O jogador acaba caíndo muitas vezes na situação em que falta uma ou duas letras para acertar, mas como as palavras são muito parecidas, ele chuta uma errada. Um exemplo prático seria entre as palavras `PEDRO` e `PEDRA`. Caso o algoritmo chegue na palavra parcial **PEDR-** e não tenha mais chutes, é impossível diferenciar entre as duas, portanto, sua chance de erro é maior com um "chute cego".
 
